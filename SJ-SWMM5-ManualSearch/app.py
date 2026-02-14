@@ -871,6 +871,37 @@ async def docs_files():
     return {"ok": True, "groups": result}
 
 
+@app.get("/download-project")
+async def download_project():
+    import zipfile
+    import io
+    import os
+
+    INCLUDE_FILES = [
+        "app.py", "main.py", "crawler.py", "indexer.py", "inp_reference.py",
+        "utils.py", "requirements.txt", "replit.md", ".gitignore",
+    ]
+    INCLUDE_DIRS = ["templates", "static", "data"]
+
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for f in INCLUDE_FILES:
+            if os.path.isfile(f):
+                zf.write(f)
+        for d in INCLUDE_DIRS:
+            if os.path.isdir(d):
+                for root, dirs, files in os.walk(d):
+                    for fname in files:
+                        fpath = os.path.join(root, fname)
+                        zf.write(fpath)
+    buf.seek(0)
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": "attachment; filename=SJ-SWMM5-ManualSearch.zip"}
+    )
+
+
 @app.get("/source", response_class=HTMLResponse)
 async def view_source(request: Request):
     source_files = ["app.py", "main.py", "crawler.py", "indexer.py", "utils.py", "requirements.txt"]

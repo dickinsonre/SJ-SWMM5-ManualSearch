@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="icon" type="image/png" href="/static/favicon.png"/>
+  <title>{{ title }}</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem auto; max-width: 1200px; line-height: 1.45; }
+    header { display: flex; gap: 1rem; align-items: baseline; flex-wrap: wrap; margin-bottom: 2rem; }
+    h1 { font-size: 1.6rem; margin: 0; }
+    .back-link { color: #0066cc; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { text-decoration: underline; }
+    .file-section { margin-bottom: 2rem; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+    .file-header { background: #f5f5f5; padding: 0.75rem 1rem; font-weight: 600; font-size: 0.9rem; border-bottom: 1px solid #ddd; }
+    .file-content { overflow-x: auto; }
+    pre { margin: 0; padding: 1rem; background: #fff; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.85rem; line-height: 1.4; }
+    code { font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; }
+    .description { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{ title }}</h1>
+    <a href="/" class="back-link">← Back to search</a>
+  </header>
+  
+  <div class="description">
+    <p>This SWMM Manual Search application crawls <a href="https://swmm-manual.netlify.app/" target="_blank">swmm-manual.netlify.app</a>, builds a local search index, and provides instant search functionality.</p>
+  </div>
+
+  {% for filename, content in files.items() %}
+  <div class="file-section">
+    <div class="file-header">{{ filename }}</div>
+    <div class="file-content">
+      <pre><code>{{ content }}</code></pre>
+    </div>
+  </div>
+  {% endfor %}
+</body>
+</html>

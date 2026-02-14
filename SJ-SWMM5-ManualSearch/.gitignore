@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.pythonlibs/
+venv/
+.venv/
+
+# Replit
+.replit
+.cache/
+.local/
+.upm/
+attached_assets/
+
+# Search index (rebuilt on first run)
+index/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+/tmp/

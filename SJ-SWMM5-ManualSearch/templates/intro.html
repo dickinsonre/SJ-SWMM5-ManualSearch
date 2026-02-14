@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>SWMM5 Manual Search — Intro Video</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    body{font-family:'Inter',system-ui,sans-serif;background:#0a1929;color:#d4e4f4;overflow:hidden;height:100vh;width:100vw}
+
+    .player{position:relative;width:100%;height:100vh;overflow:hidden}
+    .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transform:scale(1.05);transition:opacity .8s ease,transform .8s ease;padding:2rem;text-align:center;pointer-events:none}
+    .slide.active{opacity:1;transform:scale(1);pointer-events:auto}
+
+    .progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,#4fc3f7,#00bcd4);z-index:100;transition:width .3s linear}
+
+    .controls{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;gap:.75rem;align-items:center;z-index:100}
+    .ctrl-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#d4e4f4;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:background .2s}
+    .ctrl-btn:hover{background:rgba(255,255,255,.25)}
+    .ctrl-btn.active{background:rgba(79,195,247,.3);border-color:#4fc3f7}
+    .slide-dots{display:flex;gap:6px;align-items:center}
+    .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .3s;cursor:pointer}
+    .dot.active{background:#4fc3f7;width:24px;border-radius:4px}
+
+    .caption-box{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(12px);border:1px solid rgba(79,195,247,.25);border-radius:12px;padding:.7rem 1.4rem;max-width:700px;width:90%;text-align:center;z-index:100;font-size:.95rem;line-height:1.5;color:#e0f0ff;transition:opacity .4s}
+    .caption-box.hidden{opacity:0}
+
+    .top-btns{position:fixed;top:1.2rem;right:1.5rem;z-index:100;display:flex;gap:.5rem}
+    .skip-btn,.dl-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#90caf9;padding:.4rem 1rem;border-radius:20px;cursor:pointer;font-size:.8rem;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-flex;align-items:center}
+    .skip-btn:hover,.dl-btn:hover{background:rgba(255,255,255,.2)}
+    .dl-btn.recording{background:rgba(239,83,80,.25);border-color:rgba(239,83,80,.5);color:#ef5350;animation:rec-pulse 1.5s ease infinite}
+    @keyframes rec-pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+    .bg-water{position:absolute;inset:0;overflow:hidden;z-index:0}
+    .wave{position:absolute;bottom:-5%;width:200%;height:200px;opacity:.06;border-radius:40%;animation:wave-drift 12s linear infinite}
+    .wave:nth-child(2){animation-delay:-4s;opacity:.04;bottom:-8%}
+    .wave:nth-child(3){animation-delay:-8s;opacity:.03;bottom:-12%}
+    @keyframes wave-drift{0%{transform:translateX(0) rotate(0deg)}100%{transform:translateX(-50%) rotate(360deg)}}
+
+    .slide-content{position:relative;z-index:1}
+
+    .big-title{font-size:clamp(2rem,6vw,4rem);font-weight:800;background:linear-gradient(135deg,#4fc3f7,#00bcd4,#26c6da);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem;line-height:1.1}
+    .subtitle{font-size:clamp(.9rem,2.5vw,1.3rem);color:#90caf9;font-weight:400;max-width:600px;margin:0 auto}
+
+    .feature-icon{font-size:4rem;margin-bottom:1rem;display:block}
+    .feature-title{font-size:clamp(1.3rem,4vw,2.2rem);font-weight:700;color:#e0f0ff;margin-bottom:.6rem}
+    .feature-desc{font-size:clamp(.85rem,2vw,1.1rem);color:#90caf9;max-width:550px;margin:0 auto;line-height:1.6}
+
+    .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;max-width:420px;margin:1.2rem auto 0}
+    .stat-card{background:rgba(255,255,255,.06);border:1px solid rgba(79,195,247,.2);border-radius:12px;padding:1rem;text-align:center}
+    .stat-num{font-size:1.8rem;font-weight:800;color:#4fc3f7}
+    .stat-label{font-size:.75rem;color:#7aa8c8;margin-top:.2rem;text-transform:uppercase;letter-spacing:.5px}
+
+    .mock-search{background:rgba(255,255,255,.08);border:1px solid rgba(79,195,247,.25);border-radius:12px;padding:.8rem 1.2rem;max-width:500px;margin:1rem auto 0;display:flex;align-items:center;gap:.5rem}
+    .mock-search .cursor{display:inline-block;width:2px;height:1.2em;background:#4fc3f7;animation:blink 1s step-end infinite}
+    .mock-search .typed{color:#e0f0ff;font-size:1rem;font-family:monospace}
+    @keyframes blink{50%{opacity:0}}
+
+    .inp-demo{display:flex;gap:1rem;max-width:700px;margin:1rem auto 0;text-align:left}
+    .inp-pane{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(79,195,247,.15);border-radius:10px;padding:.8rem;font-size:.78rem;line-height:1.6}
+    .inp-pane.manual{border-color:rgba(79,195,247,.3)}
+    .inp-pane.inp{border-color:rgba(76,175,80,.3);background:rgba(76,175,80,.05)}
+    .inp-pane h4{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem;opacity:.7}
+    .inp-pane h4.manual-h{color:#4fc3f7}
+    .inp-pane h4.inp-h{color:#66bb6a}
+    .inp-pane code{display:block;background:rgba(0,0,0,.3);padding:.4rem .5rem;border-radius:6px;margin-top:.3rem;font-size:.72rem;color:#aed581;white-space:pre;overflow-x:auto}
+
+    .feature-list{list-style:none;max-width:500px;margin:1rem auto 0;text-align:left}
+    .feature-list li{padding:.45rem 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.6rem;font-size:.92rem;color:#b0d0e8}
+    .feature-list li span.fi{font-size:1.1rem;width:28px;text-align:center;flex-shrink:0}
+
+    .credit-card{background:rgba(255,255,255,.06);border:1px solid rgba(79,195,247,.15);border-radius:14px;padding:1.2rem 1.5rem;max-width:420px;margin:.8rem auto;display:flex;align-items:center;gap:1rem;text-align:left}
+    .credit-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}
+    .credit-avatar.sj{background:linear-gradient(135deg,#1565c0,#0277bd);color:#e3f2fd}
+    .credit-avatar.rd{background:linear-gradient(135deg,#00838f,#006064);color:#e0f7fa}
+    .credit-name{font-weight:600;color:#e0f0ff;font-size:.95rem}
+    .credit-role{font-size:.78rem;color:#7aa8c8;margin-top:.1rem}
+
+    .cta-btn{display:inline-block;margin-top:1.2rem;padding:.7rem 2rem;background:linear-gradient(135deg,#0277bd,#00838f);color:#fff;border-radius:28px;font-weight:600;font-size:1rem;text-decoration:none;border:none;cursor:pointer;font-family:inherit;transition:transform .2s,box-shadow .2s}
+    .cta-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(2,119,189,.4)}
+
+    @media(max-width:600px){
+      .inp-demo{flex-direction:column}
+      .stats-grid{grid-template-columns:1fr 1fr;gap:.6rem}
+      .caption-box{font-size:.82rem;padding:.5rem 1rem;bottom:4.5rem}
+      .controls{bottom:1rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="player" id="player">
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <div class="top-btns">
+      <a class="dl-btn" href="/presentation" title="View the PowerPoint overview presentation">View Presentation</a>
+      <button class="dl-btn" id="dl-btn" onclick="downloadVideo()" title="Record and download as video">Download Video</button>
+      <button class="skip-btn" onclick="window.location.href='/'">Skip to App</button>
+    </div>
+
+    <!-- Slide 0: Title -->
+    <div class="slide active" data-caption="Welcome to SWMM5 Manual Search — a fast, searchable companion for the EPA SWMM 5.2 Reference Manual.">
+      <div class="bg-water">
+        <div class="wave" style="background:#4fc3f7"></div>
+        <div class="wave" style="background:#00bcd4"></div>
+        <div class="wave" style="background:#26c6da"></div>
+      </div>
+      <div class="slide-content">
+        <span style="font-size:3.5rem;display:block;margin-bottom:.5rem">&#127754;</span>
+        <div class="big-title">SWMM5 Manual Search</div>
+        <div class="subtitle">Instantly search the entire EPA SWMM 5.2 Reference Manual</div>
+      </div>
+    </div>
+
+    <!-- Slide 1: The Problem -->
+    <div class="slide" data-caption="The SWMM 5.2 manual spans over 800 pages across multiple volumes. Finding what you need used to mean endless scrolling through PDFs.">
+      <div class="bg-water">
+        <div class="wave" style="background:#4fc3f7"></div>
+        <div class="wave" style="background:#00bcd4"></div>
+      </div>
+      <div class="slide-content">
+        <span class="feature-icon">&#128214;</span>
+        <div class="feature-title">800+ Page PDF Manual</div>
+        <div class="feature-desc">The EPA SWMM 5.2 documentation spans multiple volumes with 251,000+ words across 53 chapters. Finding a specific parameter, method, or equation means scrolling through hundreds of pages.</div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Scott's Work -->
+    <div class="slide" data-caption="Scott Jeffers, PE, PhD converted the entire manual into a structured, web-based collection — making this search engine possible.">
+      <div class="bg-water">
+        <div class="wave" style="background:#4fc3f7"></div>
+        <div class="wave" style="background:#00bcd4"></div>
+      </div>
+      <div class="slide-content">
+        <div class="credit-card">
+          <div class="credit-avatar sj">SJ</div>
+          <div>
+            <div class="credit-name">Scott Jeffers, PE, PhD</div>
+            <div class="credit-role">Converted the full SWMM manual to web format</div>
+          </div>
+        </div>
+        <div class="feature-desc" style="margin-top:1.2rem">The entire manual is now hosted as a structured web collection at swmm-manual.netlify.app — searchable, linkable, and accessible.</div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Instant Search -->
+    <div class="slide" data-caption="Type any keyword, phrase, or use advanced syntax. Results appear instantly across all 53 chapters and 631 sections.">
+      <div class="bg-water">
+        <div class="wave" style="background:#4fc3f7"></div>
+        <div class="wave" style="background:#00bcd4"></div>
+      </div>
+      <div class="slide-content">
+        <span class="feature-icon">&#128269;</span>
+        <div class="feature-title">Instant Full-Text Search</div>
+        <div class="mock-search">
+          <span class="typed" id="typed-text"></span><span class="cursor"></span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-num">53</div><div class="stat-label">Chapters</div></div>
+          <div class="stat-card"><div class="stat-num">631</div><div class="stat-label">Sections</div></div>
+          <div class="stat-card"><div class="stat-num">251K+</div><div class="stat-label">Words</div></div>
+          <div class="stat-card"><div class="stat-num">&lt;50ms</div><div class="stat-label">Search time</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: INP Cross-Reference -->
+    <div class="slide" data-caption="The INP cross-reference shows manual explanations alongside the actual INP file syntax — field names, data types, and examples side by side.">
+      <div class="bg-water">
+        <div class="wave" style="background:#66bb6a"></div>
+        <div class="wave" style="background:#4caf50"></div>
+      </div>
+      <div class="slide-content">
+        <span class="feature-icon">&#128279;</span>
+        <div class="feature-title">INP File Cross-Reference</div>
+        <div class="feature-desc">Search results show manual content alongside actual INP syntax</div>
+        <div class="inp-demo">
+          <div class="inp-pane manual">
+            <h4 class="manual-h">Manual</h4>
+            Conduits are pipes or channels that move water from one node to another. They are defined by shape, length, roughness, and inlet/outlet offsets.
+          </div>
+          <div class="inp-pane inp">
+            <h4 class="inp-h">INP Syntax</h4>
+            [CONDUITS]<br>
+            <code>;;Name  Node1  Node2  Length  N  Z1  Z2
+C1     J1     J2     400    0.01  0   0</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Features -->
+    <div class="slide" data-caption="Table of contents, glossary, chapter filters, deep links, keyboard shortcuts, and more — all built for engineers.">
+      <div class="bg-water">
+        <div class="wave" style="background:#4fc3f7"></div>
+        <div class="wave" style="background:#00bcd4"></div>
+      </div>
+      <div class="slide-content">
+        <span class="feature-icon">&#9889;</span>
+        <div class="feature-title">Built for Engineers</div>
+        <ul class="feature-list">
+          <li><span class="fi">&#128218;</span> Interactive Table of Contents</li>
+          <li><span class="fi">&#128220;</span> Auto-Extracted Glossary</li>
+          <li><span class="fi">&#128270;</span> Chapter-Filtered Search</li>
+          <li><span class="fi">&#128279;</span> Deep Links to Source Manual</li>
+          <li><span class="fi">&#9000;</span> Keyboard Shortcuts (/ and Ctrl+K)</li>
+          <li><span class="fi">&#127769;</span> Dark Mode with Water Theme</li>
+          <li><span class="fi">&#128241;</span> Mobile Responsive</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Slide 6: API & Offline -->
+    <div class="slide" data-caption="A public API lets other SWMM tools query the manual programmatically. Offline mode works at job sites with no internet.">
+      <div class="bg-water">
+        <div class="wave" style="background:#4fc3f7"></div>
+        <div class="wave" style="background:#00bcd4"></div>
+      </div>
+      <div class="slide-content">
+        <span class="feature-icon">&#128640;</span>
+        <div class="feature-title">API &amp; Offline Mode</div>
+        <div class="inp-demo">
+          <div class="inp-pane manual" style="flex:1">
+            <h4 class="manual-h">Public API</h4>
+            Other SWMM tools can query the manual programmatically via the REST API.
+            <code>GET /api/v1/search?q=conduits
+GET /api/v1/inp?q=junctions
+GET /api/v1/chapters</code>
+          </div>
+          <div class="inp-pane inp" style="flex:1;border-color:rgba(255,152,0,.3);background:rgba(255,152,0,.05)">
+            <h4 style="color:#ffb74d" class="inp-h">Offline PWA</h4>
+            Install as a progressive web app for field use — works without internet at job sites, on planes, or anywhere you need the manual.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Credits & CTA -->
+    <div class="slide" data-caption="Built by Robert Dickinson. Powered by Scott Jeffers' web-based SWMM Manual Collection. Start searching now!">
+      <div class="bg-water">
+        <div class="wave" style="background:#4fc3f7"></div>
+        <div class="wave" style="background:#00bcd4"></div>
+        <div class="wave" style="background:#26c6da"></div>
+      </div>
+      <div class="slide-content">
+        <div class="big-title" style="font-size:clamp(1.5rem,4vw,2.5rem);margin-bottom:1rem">Start Searching</div>
+        <div class="credit-card">
+          <div class="credit-avatar rd">RD</div>
+          <div>
+            <div class="credit-name">Robert Dickinson</div>
+            <div class="credit-role">App Creator</div>
+          </div>
+        </div>
+        <div class="credit-card">
+          <div class="credit-avatar sj">SJ</div>
+          <div>
+            <div class="credit-name">Scott Jeffers, PE, PhD</div>
+            <div class="credit-role">SWMM Manual Collection Creator</div>
+          </div>
+        </div>
+        <a href="/" class="cta-btn">Open SWMM5 Manual Search</a>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="ctrl-btn" id="prev-btn" title="Previous">&#9664;</button>
+      <button class="ctrl-btn active" id="play-btn" title="Play/Pause">&#9646;&#9646;</button>
+      <button class="ctrl-btn" id="next-btn" title="Next">&#9654;</button>
+      <div class="slide-dots" id="dots"></div>
+    </div>
+
+    <div class="caption-box" id="caption"></div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const caption = document.getElementById('caption');
+    const progressBar = document.getElementById('progress-bar');
+    const dotsContainer = document.getElementById('dots');
+    const playBtn = document.getElementById('play-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    let current = 0;
+    let playing = true;
+    let timer = null;
+    const SLIDE_DURATION = 6000;
+    const TOTAL = slides.length;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goTo(i);
+      dotsContainer.appendChild(dot);
+    });
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dotsContainer.children[current].classList.remove('active');
+      current = index;
+      slides[current].classList.add('active');
+      dotsContainer.children[current].classList.add('active');
+      caption.textContent = slides[current].dataset.caption;
+      caption.classList.remove('hidden');
+      updateProgress();
+      if (current === 3) startTyping();
+      resetTimer();
+    }
+
+    function updateProgress() {
+      progressBar.style.width = ((current + 1) / TOTAL * 100) + '%';
+    }
+
+    function advance() {
+      if (current < TOTAL - 1) {
+        goTo(current + 1);
+      } else {
+        playing = false;
+        playBtn.innerHTML = '&#9654;';
+        playBtn.classList.remove('active');
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function resetTimer() {
+      if (timer) clearInterval(timer);
+      if (playing) timer = setInterval(advance, SLIDE_DURATION);
+    }
+
+    playBtn.onclick = () => {
+      playing = !playing;
+      if (playing) {
+        playBtn.innerHTML = '&#9646;&#9646;';
+        playBtn.classList.add('active');
+        if (current === TOTAL - 1) goTo(0);
+        resetTimer();
+      } else {
+        playBtn.innerHTML = '&#9654;';
+        playBtn.classList.remove('active');
+        clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    prevBtn.onclick = () => { if (current > 0) goTo(current - 1); };
+    nextBtn.onclick = () => { if (current < TOTAL - 1) goTo(current + 1); };
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); if (current < TOTAL - 1) goTo(current + 1); }
+      if (e.key === 'ArrowLeft') { if (current > 0) goTo(current - 1); }
+      if (e.key === 'Escape') window.location.href = '/';
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', (e) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0 && current < TOTAL - 1) goTo(current + 1);
+        if (diff < 0 && current > 0) goTo(current - 1);
+      }
+    });
+
+    const TYPED_PHRASES = ['Manning roughness', 'conduits', '"pump curve"', 'infiltration, groundwater'];
+    let typedIndex = 0;
+    let typedCharIndex = 0;
+    let typeTimer = null;
+    function startTyping() {
+      const el = document.getElementById('typed-text');
+      if (!el) return;
+      clearInterval(typeTimer);
+      typedIndex = 0;
+      typedCharIndex = 0;
+      el.textContent = '';
+      typeTimer = setInterval(() => {
+        const phrase = TYPED_PHRASES[typedIndex];
+        if (typedCharIndex <= phrase.length) {
+          el.textContent = phrase.substring(0, typedCharIndex);
+          typedCharIndex++;
+        } else {
+          clearInterval(typeTimer);
+          setTimeout(() => {
+            typedIndex = (typedIndex + 1) % TYPED_PHRASES.length;
+            typedCharIndex = 0;
+            if (slides[3].classList.contains('active')) startTyping();
+          }, 1200);
+        }
+      }, 80);
+    }
+
+    caption.textContent = slides[0].dataset.caption;
+    updateProgress();
+    timer = setInterval(advance, SLIDE_DURATION);
+
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let isRecording = false;
+
+    async function downloadVideo() {
+      const dlBtn = document.getElementById('dl-btn');
+
+      if (isRecording) {
+        mediaRecorder.stop();
+        return;
+      }
+
+      try {
+        const playerEl = document.getElementById('player');
+        const canvas = document.createElement('canvas');
+        canvas.width = 1280;
+        canvas.height = 720;
+        const ctx = canvas.getContext('2d');
+
+        const stream = canvas.captureStream(30);
+        mediaRecorder = new MediaRecorder(stream, {
+          mimeType: MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+            ? 'video/webm;codecs=vp9'
+            : 'video/webm'
+        });
+
+        recordedChunks = [];
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) recordedChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          isRecording = false;
+          dlBtn.textContent = 'Download Video';
+          dlBtn.classList.remove('recording');
+          const blob = new Blob(recordedChunks, { type: 'video/webm' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'SWMM5_Manual_Search_Intro.webm';
+          a.click();
+          URL.revokeObjectURL(url);
+        };
+
+        isRecording = true;
+        dlBtn.textContent = 'Recording... Click to stop';
+        dlBtn.classList.add('recording');
+        mediaRecorder.start();
+
+        goTo(0);
+        if (!playing) {
+          playing = true;
+          playBtn.innerHTML = '&#9646;&#9646;';
+          playBtn.classList.add('active');
+        }
+        resetTimer();
+
+        function drawFrame() {
+          if (!isRecording) return;
+          try {
+            const html = document.documentElement;
+            const data = new XMLSerializer().serializeToString(html);
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720">
+              <foreignObject width="100%" height="100%">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="width:1280px;height:720px;overflow:hidden;transform:scale(1);transform-origin:0 0">
+                  ${data}
+                </div>
+              </foreignObject>
+            </svg>`;
+          } catch(e) {}
+          requestAnimationFrame(drawFrame);
+        }
+
+        const { default: html2canvasModule } = await loadHtml2Canvas();
+
+        async function captureFrame() {
+          if (!isRecording) return;
+          try {
+            const c = await html2canvasModule(playerEl, {
+              canvas: canvas,
+              width: 1280,
+              height: 720,
+              scale: 1,
+              useCORS: true,
+              logging: false
+            });
+          } catch(e) {}
+          if (isRecording) setTimeout(captureFrame, 200);
+        }
+        captureFrame();
+
+        const totalDuration = TOTAL * SLIDE_DURATION + 2000;
+        setTimeout(() => {
+          if (isRecording) mediaRecorder.stop();
+        }, totalDuration);
+
+      } catch(err) {
+        dlBtn.textContent = 'Download Video';
+        dlBtn.classList.remove('recording');
+        isRecording = false;
+        alert('Recording not supported in this browser. Try Chrome or Edge.');
+      }
+    }
+
+    function loadHtml2Canvas() {
+      return new Promise((resolve, reject) => {
+        if (window.html2canvas) {
+          resolve({ default: window.html2canvas });
+          return;
+        }
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        s.onload = () => resolve({ default: window.html2canvas });
+        s.onerror = () => reject(new Error('Failed to load html2canvas'));
+        document.head.appendChild(s);
+      });
+    }
+  </script>
+</body>
+</html>
