@@ -1,4 +1,4 @@
-# SJ-SWMM5-ManualSearch
+ 
 # SJ SWMM5 Manual Search
 
 **A fast, local search engine for the EPA Storm Water Management Model (SWMM) 5.2 Manual documentation.**
